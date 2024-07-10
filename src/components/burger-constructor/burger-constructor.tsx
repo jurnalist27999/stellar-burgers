@@ -4,6 +4,8 @@ import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
 import { createBurger } from '../../services/action';
 import { clearIngridients } from '../../services/reducers/constructorReducer';
+import { getCookie } from '../../utils/cookie';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   const { constructorItems, orderRequest, orderModalData } = useSelector(
@@ -12,7 +14,10 @@ export const BurgerConstructor: FC = () => {
 
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   const onOrderClick = () => {
+    if (!getCookie('accessToken')) return navigate('/login');
     if (!constructorItems.bun || orderRequest) return;
     dispatch(
       createBurger(

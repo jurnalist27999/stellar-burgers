@@ -13,13 +13,24 @@ import '../../index.css';
 import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { ProtectedRoute } from '../protected-route/protected-route';
-import { useSelector } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
+import { useEffect } from 'react';
+import { getAllIngredients } from '../../services/action';
 
 const App = () => {
   const navigate = useNavigate();
+  let location = useLocation();
+  let background = location.state && location.state.background;
   const { orderData } = useSelector((state) => state.data);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllIngredients());
+  }, []);
+
   function closeModal() {
     navigate(-1);
   }
@@ -27,7 +38,7 @@ const App = () => {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes>
+      <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
         <Route path='/login' element={<Login />} />
@@ -65,42 +76,53 @@ const App = () => {
           }
         />
         <Route path='*' element={<NotFound404 />} />
-        <Route
-          path='/feed/:id'
-          element={
-            <Modal
-              title={orderData ? `#${orderData.number}` : ''}
-              onClose={closeModal}
-            >
-              {' '}
-              <OrderInfo />
-            </Modal>
-          }
-        />
-        <Route
-          path='/ingredients/:id'
-          element={
-            <Modal title='Детали ингридиента' onClose={closeModal}>
-              {' '}
-              <IngredientDetails />
-            </Modal>
-          }
-        />
+        <Route path='/feed/:id' element={<OrderInfo />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route
           path='/profile/orders/:id'
           element={
             <ProtectedRoute>
-              <Modal
-                title={orderData ? `#${orderData.number}` : ''}
-                onClose={closeModal}
-              >
-                {' '}
-                <OrderInfo />
-              </Modal>
+              <OrderInfo />
             </ProtectedRoute>
           }
         />
       </Routes>
+      {background && (
+        <Routes>
+          <Route
+            path='/feed/:id'
+            element={
+              <Modal
+                title={orderData ? `#${orderData.number}` : ''}
+                onClose={closeModal}
+              >
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title='Детали ингридиента' onClose={closeModal}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:id'
+            element={
+              <ProtectedRoute>
+                <Modal
+                  title={orderData ? `#${orderData.number}` : ''}
+                  onClose={closeModal}
+                >
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      )}
     </div>
   );
 };

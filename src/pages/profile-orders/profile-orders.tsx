@@ -1,7 +1,7 @@
 import { ProfileOrdersUI } from '@ui-pages';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
-import { getAllIngredients, getAllOrders } from '../../services/action';
+import { getAllOrders } from '../../services/action';
 
 export const ProfileOrders: FC = () => {
   const { orders } = useSelector((state) => state.feed);
@@ -10,7 +10,6 @@ export const ProfileOrders: FC = () => {
 
   useEffect(() => {
     dispatch(getAllOrders());
-    dispatch(getAllIngredients());
   }, []);
 
   return <ProfileOrdersUI orders={orders} />;
