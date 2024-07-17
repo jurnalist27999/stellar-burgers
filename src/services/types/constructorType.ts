@@ -7,6 +7,12 @@ export type TConstructor = {
 };
 
 type TConstructorItems = {
-  bun: { price: number; _id: string; name: string; image: string } | null;
+  bun: {
+    price: number;
+    _id: string;
+    name: string;
+    image: string;
+    key: string;
+  } | null;
   ingredients: TConstructorIngredient[];
 };

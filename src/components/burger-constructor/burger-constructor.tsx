@@ -12,6 +12,7 @@ export const BurgerConstructor: FC = () => {
     (state) => state.burgerConstructor
   );
 
+  console.log(constructorItems);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();

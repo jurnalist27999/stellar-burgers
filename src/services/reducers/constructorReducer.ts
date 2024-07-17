@@ -1,6 +1,7 @@
 import { createSlice, isAction } from '@reduxjs/toolkit';
 import { createBurger } from '../action';
 import { TConstructor } from '../types/constructorType';
+import { v4 as uuidv4 } from 'uuid';
 
 const initialState: TConstructor = {
   constructorItems: {
@@ -38,11 +39,12 @@ export const constructorSlice = createSlice({
   },
   reducers: {
     addIngridient: (state, action) => {
+      const key = uuidv4();
       if (action.payload.type === 'bun') {
-        state.constructorItems.bun = action.payload;
+        state.constructorItems.bun = { ...action.payload, key };
       } else {
         state.constructorItems.ingredients = [
-          action.payload,
+          { ...action.payload, key },
           ...state.constructorItems.ingredients
         ];
       }
