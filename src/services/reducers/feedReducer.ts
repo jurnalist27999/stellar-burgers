@@ -3,7 +3,7 @@ import { getAllFeeds, getAllOrders } from '../action';
 import { TFeed } from '../types/feedType';
 import { RootState } from '../store';
 
-const initialState: TFeed = {
+export const initialState: TFeed = {
   orders: [],
   feed: { total: 0, totalToday: 0 },
   feedLoading: false,

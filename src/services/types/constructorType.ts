@@ -12,7 +12,7 @@ type TConstructorItems = {
     _id: string;
     name: string;
     image: string;
-    key: string;
+    key?: string;
   } | null;
   ingredients: TConstructorIngredient[];
 };

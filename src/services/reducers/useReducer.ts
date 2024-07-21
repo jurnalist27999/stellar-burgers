@@ -9,7 +9,7 @@ import {
 import { TUserState } from '../types/userStateType';
 import { deleteCookie, getCookie, setCookie } from '../../utils/cookie';
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   user: {
     name: '',
     email: ''

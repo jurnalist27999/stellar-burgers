@@ -11,7 +11,7 @@ import {
   orderBurgerApi,
   registerUserApi,
   updateUserApi
-} from '@api';
+} from '../../utils/burger-api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const getAllIngredients = createAsyncThunk(
