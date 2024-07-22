@@ -14,6 +14,7 @@ export type TIngredient = {
 
 export type TConstructorIngredient = TIngredient & {
   id: string;
+  key?: string;
 };
 
 export type TOrder = {
@@ -38,3 +39,7 @@ export type TUser = {
 };
 
 export type TTabMode = 'bun' | 'sauce' | 'main';
+
+export type IUseParams = {
+  id: string;
+};
