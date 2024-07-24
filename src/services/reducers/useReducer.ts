@@ -7,16 +7,13 @@ import {
   updateUser
 } from '../action';
 import { TUserState } from '../types/userStateType';
-import { deleteCookie, getCookie, setCookie } from '../../utils/cookie';
 
 export const initialState: TUserState = {
   user: {
     name: '',
     email: ''
   },
-  userLoading: false,
-  refreshToken: localStorage.getItem('refreshToken') || '',
-  accessToken: getCookie('accessToken') || ''
+  userLoading: false
 };
 
 export const userSlice = createSlice({
@@ -46,10 +43,6 @@ export const userSlice = createSlice({
       state.userLoading = false;
       console.log(action.payload);
       state.user = action.payload.user;
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
-      setCookie('accessToken', action.payload.accessToken);
-      localStorage.setItem('refreshToken', action.payload.refreshToken);
     });
     builder.addCase(registerUser.rejected, (state) => {
       //условие, если запрос не удался,вышла ошибки.
@@ -63,10 +56,6 @@ export const userSlice = createSlice({
       state.userLoading = false;
       console.log(action.payload);
       state.user = action.payload.user;
-      state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
-      setCookie('accessToken', action.payload.accessToken);
-      localStorage.setItem('refreshToken', action.payload.refreshToken);
     });
     builder.addCase(loginUser.rejected, (state) => {
       //условие, если запрос не удался,вышла ошибки.
@@ -78,8 +67,11 @@ export const userSlice = createSlice({
     builder.addCase(logoutUser.fulfilled, (state, action) => {
       //условие получения данных запроса. При этом нужно указать завершение состояния лоадера - фолс.
       state.userLoading = false;
+      state.user = {
+        name: '',
+        email: ''
+      };
       console.log(action.payload);
-      deleteCookie('accessToken');
     });
     builder.addCase(logoutUser.rejected, (state) => {
       //условие, если запрос не удался,вышла ошибки.

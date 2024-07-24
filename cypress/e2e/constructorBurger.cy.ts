@@ -30,23 +30,36 @@ describe('добавление ингредиента в список заказ
   });
   describe('добавление булок и начинок', () => {
     it('добавление булки и начинки в список заказа', () => {
+      cy.get('[data-cy="select-button"]');
+      cy.get('[data-cy="ingredients-button"]');
       cy.get(ID_BUN).children('button').click();
       cy.get(ID_FILLING).children('button').click();
+      cy.get('[data-cy="select-button"]').should('not.exist');
+      cy.get('[data-cy="ingredients-button"]').should('not.exist');
     });
     it('добавление булки после добавления начинок', () => {
+      cy.get('[data-cy="select-button"]');
+      cy.get('[data-cy="ingredients-button"]');
       cy.get(ID_FILLING).children('button').click();
       cy.get(ID_BUN).children('button').click();
+      cy.get('[data-cy="select-button"]').should('not.exist');
+      cy.get('[data-cy="ingredients-button"]').should('not.exist');
     });
   });
   describe('замена булок', () => {
     it('замена булки другой булкой при пустом списке начинок', () => {
+      cy.get('[data-cy="ingredients-button"]').should('not.exist');
       cy.get(ID_BUN).children('button').click();
       cy.get(ID_ANOTHER_BUN).children('button').click();
+      cy.get('[data-cy="select-button"]').should('not.exist');
     });
     it('замена булки другой булкой при полном списке начинок ', () => {
+      cy.get('[data-cy="ingredients-button"]');
       cy.get(ID_BUN).children('button').click();
       cy.get(ID_FILLING).children('button').click();
       cy.get(ID_ANOTHER_BUN).children('button').click();
+      cy.get('[data-cy="select-button"]').should('not.exist');
+      cy.get('[data-cy="select-button"]').should('not.exist');
     });
   });
 });

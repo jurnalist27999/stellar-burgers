@@ -158,7 +158,10 @@ describe('тестирование редьюсера userReducer', () => {
     test('тест синхронного экшена logoutUser.fulfilled', () => {
       const nextState = userReducer(initialState, actions.fulfilled);
       expect(nextState.userLoading).toBe(false);
-      expect(nextState.user).toBe(actions.fulfilled.payload);
+      expect(nextState.user).toStrictEqual({
+        name: '',
+        email: ''
+      });
     });
   });
 });
