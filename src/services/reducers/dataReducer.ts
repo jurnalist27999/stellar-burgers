@@ -4,7 +4,7 @@ import { TData } from '../types/dataType';
 import { RootState } from '../store';
 import { TOrder } from '@utils-types';
 
-const initialState: TData = {
+export const initialState: TData = {
   ingridients: [],
   buns: [],
   mains: [],

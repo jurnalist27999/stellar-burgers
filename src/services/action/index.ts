@@ -1,3 +1,4 @@
+import { deleteCookie, setCookie } from '../../utils/cookie';
 import {
   TLoginData,
   TRegisterData,
@@ -11,7 +12,7 @@ import {
   orderBurgerApi,
   registerUserApi,
   updateUserApi
-} from '@api';
+} from '../../utils/burger-api';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const getAllIngredients = createAsyncThunk(
@@ -35,15 +36,37 @@ export const getUserInfo = createAsyncThunk('user/getUserInfo', getUserApi);
 
 export const registerUser = createAsyncThunk(
   'user/registerUser',
-  (data: TRegisterData) => registerUserApi(data)
+  async (data: TRegisterData) => {
+    const res = await registerUserApi(data);
+    if (!res.success) {
+      return res;
+    }
+    setCookie('accessToken', res.accessToken);
+    localStorage.setItem('refreshToken', res.refreshToken);
+
+    return res;
+  }
 );
 
 export const loginUser = createAsyncThunk(
   'user/loginUser',
-  (data: TLoginData) => loginUserApi(data)
+  async (data: TLoginData) => {
+    const res = await loginUserApi(data);
+    if (!res.success) {
+      return res;
+    }
+    setCookie('accessToken', res.accessToken);
+    localStorage.setItem('refreshToken', res.refreshToken);
+
+    return res;
+  }
 );
 
-export const logoutUser = createAsyncThunk('user/logoutUser', logoutApi);
+export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
+  logoutApi().then(() => {
+    deleteCookie('accessToken');
+  });
+});
 
 export const updateUser = createAsyncThunk(
   'user/updateUser',
